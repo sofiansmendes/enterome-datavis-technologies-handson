@@ -1,10 +1,10 @@
-<div class="answer"> I really like data visualisation!</div>
+<p> I <span style='color: red'>really</span> like data visualisation!</p>
 
 <style>
-    div.answer {
+    p {
       color: steelblue;
       font-family: courier;
-      font-size: 80%;
+      font-size: 120%;
     }
   </style>
 
