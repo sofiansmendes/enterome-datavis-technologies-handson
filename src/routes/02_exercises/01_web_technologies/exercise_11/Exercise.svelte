@@ -1,7 +1,7 @@
 <script> 
     import ExChild from '../exercise_11/Exercise_child.svelte';
-    const Mycount=100;
+    let realAnswer=42;
 </script>
 
 
-<ExChild answer={Mycount} />
+<ExChild answer={realAnswer} />
