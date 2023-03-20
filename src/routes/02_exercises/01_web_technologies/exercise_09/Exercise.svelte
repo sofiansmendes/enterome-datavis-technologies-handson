@@ -5,4 +5,3 @@
 
 
 The circumference of a circle with radius {r} is
-
