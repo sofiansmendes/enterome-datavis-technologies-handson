@@ -1,7 +1,7 @@
 <script>
-    function per(r) {round(2*pi*r,2)};
-    const r=2;
+    let rad=2;
+    function per(rad) {return (Math.round(2*Math.PI*rad*100)/100)};
 </script>
 
 
-The circumference of a circle with radius {r} is
+The circumference of a circle with radius {rad}m and {per(rad)}m.
