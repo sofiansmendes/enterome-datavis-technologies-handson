@@ -4,6 +4,6 @@
 </script>
 
 <div>
-    <Ex2 />
-    <Ex3 />
+    <Ex3/>
+    <Ex2/>
 </div>
