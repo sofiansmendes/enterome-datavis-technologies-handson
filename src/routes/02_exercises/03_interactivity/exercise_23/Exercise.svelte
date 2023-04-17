@@ -20,11 +20,30 @@
   
     // Color
     let color = "darkred";
+
+     // Function to reduce index every second
+  const countdown = setInterval(() => {
+    if (index > 0) {
+      index--;
+    } else {
+      color = "darkgreen";
+      clearInterval(countdown);
+    }
+  }, 1000);
+
   </script>
   
   <svg viewBox="0 0 {width} {height}">
     <g transform="translate({margin.left},{margin.top})">
-      <!--  -->
+      {#each points as point, i}
+      <circle
+        cx={point}
+        cy={innerHeight / 2}
+        r="10"
+        fill={color}
+        opacity={i < index ? 0.3 : 1}
+      />
+    {/each}
     </g>
   </svg>
   
