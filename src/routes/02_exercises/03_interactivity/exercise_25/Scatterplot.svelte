@@ -3,6 +3,7 @@
   import { select } from "d3-selection";
   import { scaleLinear } from "d3-scale";
   import { axisBottom, axisLeft } from "d3-axis";
+  import { brush } from "d3-brush";
 
   // Properties
   export let data = [];
@@ -10,6 +11,9 @@
   export let y = (d) => d.y;
   export let xLabel = "x";
   export let yLabel = "y";
+  export let selected_both = [];
+  export let selected_local = [];
+
 
   // Dimensions
   const width = 300;
@@ -31,21 +35,48 @@
   // If there is no active selection, it contains: null,
   // otherwise, it contains: [ [x0, y0], [x1, y1] ]
   let range = null;
+  const my_brush = (node) => brush().on('start', brush_function).on('brush', brush_function).on('end', brush_function)(select(node));
+  let coords = [];
+
+  for (let i = 0; i < data.length; i++) {
+    coords[i] = [xScale(x(data[i])), yScale(y(data[i]))];
+  }
+
+  if (range == null) {
+    for (let i = 0; i < data.length; i++) {
+      selected_local[i] = true; //all datapoints set to true if no active selection
+    }
+  }
+
+  function brush_function({selection}) {
+    if (selection) {
+      range = selection;
+      for (let i = 0; i < data.length; i++) {
+        if (range != null && coords[i][0] >= range[0][0] && coords[i][0] <= range[1][0] && coords[i][1] >= range[0][1] && coords[i][1] <= range[1][1]) {
+          selected_local[i] = true;
+        } else {
+          if (range != null) {
+            selected_local[i] = false;
+          } else {
+            selected_local[i] = true;
+          }
+        }
+      }
+    }
+  }
+
 </script>
 
 <svg viewBox="0 0 {width} {height}" class="mx-2" style="max-width: {width}px">
-  <g transform="translate({margin.left},{margin.top})">
+  <g transform="translate({margin.left},{margin.top})" use:my_brush>
     <g>
-      {#each data as d}
+      {#each data as d,idx}
         <circle
-          cx={xScale(x(d))}
-          cy={yScale(y(d))}
-          r={2}
-          fill="steelblue"
-          fill-opacity="0.5"
-          stroke="steelblue"
-          stroke-width="1.5"
-          stroke-opacity="1"
+        class="selected"
+        class:unselected={selected_both[idx] == false}
+        cx={coords[idx][0]}
+        cy={coords[idx][1]}
+        r={3}
         />
       {/each}
     </g>
@@ -71,4 +102,19 @@
     vertical-align: bottom;
     fill: currentcolor;
   }
+  .selected {
+    fill: steelblue;
+    fill-opacity: 0.5;
+    stroke: steelblue;
+    stroke-opacity: 1;
+    stroke-width: 1.5;
+  }
+  .unselected {
+    fill: darkgray;
+    fill-opacity: 0.3;
+    stroke: darkgray;
+    stroke-opacity: 0.5;
+    stroke-width: 1.5;
+  }
+
 </style>

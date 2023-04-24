@@ -22,13 +22,29 @@
     xLabel: "Displacement",
     yLabel: "Miles per Gallon",
   };
+
+  $: selected_1 = [];
+  $: selected_2 = [];
+  $: selected_both = combine_both(selected_1, selected_2);
+  let result = [];
+
+  function combine_both(sp1, sp2) {
+    for (let i = 0; i < 406; i++) {
+      if (sp1[i] == true & sp2[i] == true) {
+        result[i] = true;
+      } else {
+        result[i] = false;
+      }
+    }
+    return result;
+  }
 </script>
 
 {#if !data}
   <p>Loading the data, please wait...</p>
 {:else}
   <div class="d-flex justify-content-around">
-    <Scatter {data} {...s1} />
-    <Scatter {data} {...s2} />
+    <Scatter {data} {...s1} {selected_both} bind:selected_local={selected_1}/>
+    <Scatter {data} {...s2} {selected_both} bind:selected_local={selected_2}/>
   </div>
 {/if}
